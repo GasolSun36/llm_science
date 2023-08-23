@@ -2,8 +2,8 @@ import csv
 import json
 
 # 定义CSV文件和将要创建的JSON文件的名称
-csv_filename = 'data/train_final_LLMScience.csv'
-json_filename = 'data/LLMScience.json'
+csv_filename = '../data/train.csv'
+json_filename = '../data/llm_train.json'
 
 # 读取CSV并转换为JSON
 data = []
