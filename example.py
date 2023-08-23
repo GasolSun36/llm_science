@@ -1,5 +1,3 @@
-
-
 prompt = """Question: What is the purpose of obtaining surgical resection specimens?
 A: To remove an entire diseased area or organ for definitive surgical treatment of a disease, with pathological analysis of the specimen used to confirm the diagnosis.
 B: To perform visual and microscopic tests on tissue samples using automated analysers and cultures.
@@ -53,7 +51,8 @@ import os
 import fire
 import torch
 import json
-from transformers import GenerationConfig, AutoTokenizer, AutoModelForCausalLM, AutoConfig
+import numpy as np
+from transformers import GenerationConfig, AutoTokenizer, AutoModelForCausalLM
 
 
 if torch.cuda.is_available():
@@ -115,6 +114,8 @@ def main(
             **kwargs,
         )
 
+        only_options = False
+
         with torch.no_grad():
             generation_output = model.generate(
                 input_ids=input_ids,
@@ -123,8 +124,17 @@ def main(
                 output_scores=True,
                 max_new_tokens=max_new_tokens,
             )
-        s = generation_output.sequences[0]
-        output = tokenizer.decode(s)
+        if only_options:
+            scores = generation_output.scores[0][0].to(torch.float32)
+            label_score = []
+            candidates = ["A", "B", "C", "D", "E"]
+            for can in candidates:
+                can_id = tokenizer.encode(can)[-1]
+                label_score.append(scores[can_id].item())
+            output = candidates[np.argmax(label_score)]
+        else:
+            s = generation_output.sequences[0]
+            output = tokenizer.decode(s)
         return output
     
     with open('data/LLMScience.json',encoding='utf-8') as f:
