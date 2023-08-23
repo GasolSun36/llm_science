@@ -140,7 +140,7 @@ def main(
     with open('data/LLMScience.json',encoding='utf-8') as f:
         datas = json.load(f)
 
-    datas = datas[:-5]
+    datas = datas[0:200]
     
     for data in datas:
         seq = evaluate(data['prompt'],data['A'],data['B'],data['C'],data['D'],data['E'])

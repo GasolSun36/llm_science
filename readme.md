@@ -80,6 +80,23 @@ where deepspeed.json is:
 }
 ```
 
+The format of the instruct-tuning for llama2 is the same as for alpaca, which is the following format:
+```json
+{
+    "instruction": "Describe a time when you had to make a difficult decision.",
+    "input": "",
+    "output": "As an AI assistant, I do not have my own personal experiences or physical existence. However, I am programmed to make decisions based on algorithms, logic, and data. There are times when I encounter a situation where making a decision is difficult because there may be conflicting information or multiple possible outcomes. In such cases, I use my ability to analyze and weigh the risks and benefits of each option and come to a conclusion that is most likely to achieve the desired result."
+},
+```
+🪛 First edition dataprompt:
+```json
+{
+    "instruction": "The following is a multiple choice question, answer to the best of your capabilities.",
+    "input": "Question: {The question of the science QA}\nA:{}\nB:{}\nC:{}\nD:{}\nE:{}",
+    "output": "{Ground Truth}"
+},
+```
+
 -----------------------------------------------------------------
 
 Experiments:
