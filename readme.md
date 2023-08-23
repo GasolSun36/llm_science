@@ -1,5 +1,6 @@
 # LLM Science
 
+## Basic Setting
 This is a repo for [https://www.kaggle.com/competitions/kaggle-llm-science-exam/](https://www.kaggle.com/competitions/kaggle-llm-science-exam/)
 
 We plan to use [https://huggingface.co/meta-llama/Llama-2-13b-hf](meta-llama/Llama-2-13b-hf) as our backbone LLM.
@@ -10,6 +11,12 @@ We plan to use [https://huggingface.co/meta-llama/Llama-2-13b-hf](meta-llama/Lla
 `utils/`: The utils folder holds a variety of tool py files related to data processing and others.
 
 `example.py`: demo
+
+### available datalist: 
+- [https://huggingface.co/datasets/Sangeetha/Kaggle-LLM-Science-Exam](https://huggingface.co/datasets/Sangeetha/Kaggle-LLM-Science-Exam)
+
+
+## Training
 
 The training process can use [https://github.com/hiyouga/LLaMA-Efficient-Tuning](https://github.com/hiyouga/LLaMA-Efficient-Tuning) repo, and make the following modifications:
 > 1. move our own instruction dataset to `/data`.
@@ -99,7 +106,7 @@ The format of the instruct-tuning for llama2 is the same as for alpaca, which is
 
 -----------------------------------------------------------------
 
-Experiments:
+## Experiments:
 
 | Models | Dates | MAP@3 |  Des  |
 |--------| ------|-------|-------|
