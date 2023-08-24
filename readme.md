@@ -14,7 +14,7 @@ We plan to use [https://huggingface.co/meta-llama/Llama-2-13b-hf](meta-llama/Lla
 
 ### available datalist: 
 - [https://huggingface.co/datasets/Sangeetha/Kaggle-LLM-Science-Exam](https://huggingface.co/datasets/Sangeetha/Kaggle-LLM-Science-Exam)
-- [https://huggingface.co/datasets/derek-thomas/ScienceQA](https://huggingface.co/datasets/derek-thomas/ScienceQA)
+- [https://huggingface.co/datasets/metaeval/ScienceQA_text_only](https://huggingface.co/datasets/metaeval/ScienceQA_text_only)
 - [https://huggingface.co/datasets/openbookqa](https://huggingface.co/datasets/openbookqa)
 ## Training
 
