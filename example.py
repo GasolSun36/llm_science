@@ -1,4 +1,4 @@
-prompt = """Question: What is the purpose of obtaining surgical resection specimens?
+"""Question: What is the purpose of obtaining surgical resection specimens?
 A: To remove an entire diseased area or organ for definitive surgical treatment of a disease, with pathological analysis of the specimen used to confirm the diagnosis.
 B: To perform visual and microscopic tests on tissue samples using automated analysers and cultures.
 C: To work in close collaboration with medical technologists and hospital administrations.
@@ -38,14 +38,15 @@ D: Ferroelectric memristors have a unique piezoelectric field that allows for th
 E: Ferroelectric memristors are based on vertically aligned carbon nanotubes, which offer a more efficient and faster switching mechanism than other materials.
 Answer: B
 
-Question: {}
+"""
+
+prompt = """Question: {}
 A: {}
 B: {}
 C: {}
 D: {}
 E: {}
 Answer: """
-
 
 import os
 import fire
@@ -84,8 +85,9 @@ def main(
     )
     model = AutoModelForCausalLM.from_pretrained(
         base_model,
-        torch_dtype=torch.bfloat16,
-        device_map="auto"
+        torch_dtype=torch.float16,
+        device_map="auto",
+        trust_remote_code=True
     )
     model.eval()
 
@@ -98,39 +100,37 @@ def main(
         E,
         temperature=0.4,
         top_p=1,
-        top_k=40,
-        num_beams=4,
         max_new_tokens=50,
         **kwargs,
     ):
         inputs = prompt.format(question, A, B, C, D, E)
         inputs = tokenizer(inputs, return_tensors="pt")
-        input_ids = inputs["input_ids"].to(device)
-        generation_config = GenerationConfig(
-            temperature=temperature,
-            top_p=top_p,
-            do_sample=True,
-            num_beams=num_beams,
-            **kwargs,
-        )
+        input_ids = inputs["input_ids"].to("cuda")
 
         only_options = True
 
         with torch.no_grad():
-            generation_output = model.generate(
-                input_ids=input_ids,
-                generation_config=generation_config,
-                return_dict_in_generate=True,
-                output_scores=True,
-                max_new_tokens=max_new_tokens,
-            )
+            generation_output = model(input_ids)
+            output = generation_output.logits
+            # generation_output = model.generate(
+            #     input_ids=input_ids,
+            #     generation_config=generation_config,
+            #     return_dict_in_generate=True,
+            #     output_scores=True,
+            #     max_new_tokens=max_new_tokens,
+            # )
         if only_options:
-            scores = generation_output.scores[0][0].to(torch.float32)
+            output = output[0][-1]
+            # _, output_index = torch.max(output, 0)
+            # predicted_tokens1 = tokenizer.convert_ids_to_tokens(output_index.item())
+            # scores = generation_output.scores[0][0].to(torch.float32)
+            # _, output_index = torch.max(scores, 0)
+            # predicted_tokens2 = tokenizer.convert_ids_to_tokens(output_index.item())
             label_score = []
             candidates = ["A", "B", "C", "D", "E"]
             for can in candidates:
                 can_id = tokenizer.encode(can)[-1]
-                label_score.append(scores[can_id].item())
+                label_score.append(output[can_id].item())
             output = np.argsort(label_score)[-3:][::-1]
             output = [candidates[i] for i in output]  # TOP3
             # output = candidates[np.argmax(label_score)]  # TOP1

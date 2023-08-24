@@ -118,3 +118,11 @@ The format of the instruct-tuning for llama2 is the same as for alpaca, which is
 |--------| ------|-------|-------|
 | LLAMA2-13B | 2023-8-23 | xx.xx | use 5-shot to test the performance of vallia LLAMA2-13B
 
+
+
+# Important:
+
+- 5-shot (1530 tokens with input question) use 56G with LLAMA2-13B-HF without quand.
+- 5-shot (1530 tokens with input question) use 28G with LLAMA2-13B-HF with load_8_bit quand. (we use this)
+
+- 0-shot use 38G without quand.
