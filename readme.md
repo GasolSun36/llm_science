@@ -14,8 +14,8 @@ We plan to use [https://huggingface.co/meta-llama/Llama-2-13b-hf](meta-llama/Lla
 
 ### available datalist: 
 - [https://huggingface.co/datasets/Sangeetha/Kaggle-LLM-Science-Exam](https://huggingface.co/datasets/Sangeetha/Kaggle-LLM-Science-Exam)
-
-
+- [https://huggingface.co/datasets/derek-thomas/ScienceQA](https://huggingface.co/datasets/derek-thomas/ScienceQA)
+https://huggingface.co/datasets/openbookqa
 ## Training
 
 The training process can use [https://github.com/hiyouga/LLaMA-Efficient-Tuning](https://github.com/hiyouga/LLaMA-Efficient-Tuning) repo, and make the following modifications:
