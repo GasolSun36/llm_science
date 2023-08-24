@@ -108,7 +108,13 @@ The format of the instruct-tuning for llama2 is the same as for alpaca, which is
 
 ## Experiments:
 
-| Models | Dates | MAP@3 |  Des  |
+| Models | Dates | MAP@3 (test) |  Des  |
 |--------| ------|-------|-------|
-| LLAMA2-13B | 2023-8-23 | xx.xx| use 5-shot to test the performance of vallia LLAMA2-13B
+| LLAMA2-13B | 2023-8-23 | 69.92 | use 5-shot to test the performance of vallia LLAMA2-13B
+
+
+
+| Models | Dates | MAP@3 (private) |  Des  |
+|--------| ------|-------|-------|
+| LLAMA2-13B | 2023-8-23 | xx.xx | use 5-shot to test the performance of vallia LLAMA2-13B
 

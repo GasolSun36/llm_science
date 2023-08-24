@@ -53,7 +53,7 @@ import torch
 import json
 import numpy as np
 from transformers import GenerationConfig, AutoTokenizer, AutoModelForCausalLM
-
+from tqdm import tqdm
 
 if torch.cuda.is_available():
     device = "cuda"
@@ -100,7 +100,7 @@ def main(
         top_p=1,
         top_k=40,
         num_beams=4,
-        max_new_tokens=256,
+        max_new_tokens=50,
         **kwargs,
     ):
         inputs = prompt.format(question, A, B, C, D, E)
@@ -109,12 +109,12 @@ def main(
         generation_config = GenerationConfig(
             temperature=temperature,
             top_p=top_p,
-            top_k=top_k,
+            do_sample=True,
             num_beams=num_beams,
             **kwargs,
         )
 
-        only_options = False
+        only_options = True
 
         with torch.no_grad():
             generation_output = model.generate(
@@ -131,7 +131,9 @@ def main(
             for can in candidates:
                 can_id = tokenizer.encode(can)[-1]
                 label_score.append(scores[can_id].item())
-            output = candidates[np.argmax(label_score)]
+            output = np.argsort(label_score)[-3:][::-1]
+            output = [candidates[i] for i in output]  # TOP3
+            # output = candidates[np.argmax(label_score)]  # TOP1
         else:
             s = generation_output.sequences[0]
             output = tokenizer.decode(s)
@@ -141,10 +143,16 @@ def main(
         datas = json.load(f)
 
     datas = datas[0:200]
-    
-    for data in datas:
+    new_dict=[]
+    id = 0
+    for data in tqdm(datas):
         seq = evaluate(data['prompt'],data['A'],data['B'],data['C'],data['D'],data['E'])
+        new_dict.append({"id":id, "output":seq})
         print(seq)
+        id+=1
+
+    with open('submission.json', 'w', encoding='utf-8') as json_file:
+        json.dump(new_dict, json_file, ensure_ascii=False, indent=4)
 
 if __name__ == "__main__":
     fire.Fire(main)
